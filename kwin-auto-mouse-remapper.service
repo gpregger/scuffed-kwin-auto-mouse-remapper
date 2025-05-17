@@ -1,0 +1,12 @@
+[Unit]
+Description=Kwin Auto Mouse Remapper
+After=plasma-kwin_wayland.service
+PartOf=graphical.target
+StartLimitIntervalSec=30
+StartLimitBurst=2
+
+[Service]
+ExecStart=echo "Make sure to adjust the ExecStart line in this unit to: <python executable path> <python script path>"
+
+[Install]
+WantedBy=plasma-kwin_wayland.service

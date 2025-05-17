@@ -1,0 +1,21 @@
+{
+    "KPlugin": {
+        "Name": "Mouse Mapping Window Title Sender",
+        "Description": "Sends the active window's title to org.schorsch.mousekeymapper to auto run mouse key remapping scripts",
+        "Icon": "preferences-system-windows",
+
+        "Authors": [
+            {
+                "Email": "wsixcde@gmail.com",
+                "Name": "Schorsch R."
+            }
+        ],
+        "Id": "kwin_window_title_sender",
+        "Version": "1.0",
+        "License": "GPLv3",
+        "Website": "https://github.com/username/myscript"
+    },
+    "X-Plasma-API": "javascript",
+    "X-Plasma-MainScript": "code/main.js",
+    "KPackageStructure": "KWin/Script"
+}

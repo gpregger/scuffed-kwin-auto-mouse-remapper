@@ -1,0 +1,10 @@
+[
+    {
+        "window-title": "__DEFAULT__",
+        "mapping-script": "keybind_desktop.sh"
+    },
+    {
+        "window-title": "Elite - Dangerous (CLIENT)",
+        "mapping-script": "keybind_elite_dangerous.sh"
+    }
+]
