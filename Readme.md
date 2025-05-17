@@ -70,3 +70,10 @@ I just thought it would be nice to have this publicly documented.
 ## Thanks
 - [JoGr@Stackoverflow](https://stackoverflow.com/questions/34482691/register-a-hello-world-dbus-service-object-and-method-using-python) for the HelloWorld python-dbus example
 - *You*, should you decide to contribute to the [KWin Scripting API documentation](https://develop.kde.org/docs/plasma/kwin/) (because lord knows, it needs it)
+
+## Changes
+### 17.05.2025
+Added an additional DBus listener so the script can wait until any global hotkeys are released before loading a new mapping. Previously there was an issue that when for example switching to a matching window on a different virtual desktop using Ctrl+Meta+ArrowKey the Ctrl+Meta keys would get stuck.
+
+## To Do
+- Offer more options for matching, maybe via regex pattern or process name
