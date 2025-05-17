@@ -33,7 +33,7 @@ Along with this rule in 'app_mapping.json':
 which automagically configures the extra buttons on my mouse for Elite Dangrous as if you'd set them in the Plasma System settings. Seems pretty reliable. More reliable than Piper in any case, fucking rat-shit...  
 Well to be fair you do need Piper to set all your Gamerbuttons to something generic first. But that's a one and done kinda deal.  
 
-Also make sure there is a "__DEFAULT__" 'app' in the 'app_mapping.json', this is the mapping that applies if no other match is found. A valid 'app_mapping.json' would be:  
+Also make sure there is a "\__DEFAULT__" 'app' in the 'app_mapping.json', this is the mapping that applies if no other match is found. A valid 'app_mapping.json' would be:  
 ```json
 [
     {
