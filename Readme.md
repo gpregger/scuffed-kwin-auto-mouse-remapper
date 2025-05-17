@@ -60,7 +60,7 @@ And of course both 'keybind_desktop.sh' and 'keybind_elite_dangerous.sh' need to
 8. Install and enable the KWin script, either via the provided install script or via Plasma System Settings GUI
 9. Done  
 
-See the documentation above on how to configure which window should trigger which script. Don't forget to `systemctl --user restart kwin-auto-mouse-remapper` after changing to config so it gets reloaded.  
+See the documentation above on how to configure which window should trigger which script. Don't forget to `systemctl --user restart kwin-auto-mouse-remapper` after changing the config so it gets reloaded.  
 
 ## DISCLAIMER
 This service can just run arbitrary scripts. Make sure you have backups of your data for when your 'friend' smuggles some ransomware in there.  
