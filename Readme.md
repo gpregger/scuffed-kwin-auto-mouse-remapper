@@ -1,13 +1,12 @@
 # Scuffed Auto Mouse Key Remapping with Kwin and DBus
-This is the result of a spontaneous 6h pre-weekend crunch trying to somewhat replicate the Logitech G Hub functionality of having per application mouse profiles.  
-It's pretty scuffed but hey, it works so far (not that I've tested it for more than 5 minutes as of writing this).  
-If this acutally ends up working mid to long term, consider my mind somewhat boggled that it took this long to produce something like this.  
+This is the result of ~~a~~ several spontaneous 6h pre-weekend crunches. It's pretty scuffed but hey, it works so far (not that I've tested it for more than ~~5~~ 120 minutes as of writing this).  
+If this acutally ends up working mid to long term, consider my mind thoroughly boggled that it took this long to produce something like this.  
 Though to be fair, scope of application is a bit narrow, seeing as this is very KDE specific.  
 
 ## Working Principle
 1. 'kwin-auto-mouse-remapper-dbus-service.py' runs as a systemd service using 'kwin-auto-mouse-remapper.service'
 2. This python script loads 'app_mapping.json' which contains the rules about which window gets which mapping script. simple.
-2. 'kwin_window_title_sender' runs in the background as a KWin script. This connects to the workspace.windowActivated signal and with every window focus change reports the title of the active window to the DBus service 'org.schorsch.mousekeymapper' provided by 'kwin-auto-mouse-remapper-dbus-service.py'
+2. 'kwin_window_title_sender' runs in the background as a KWin script. This connects to the workspace.windowActivated signal and with every window focus change reports the title of the active window and the PID of the responsible process to the DBus service 'org.schorsch.mousekeymapper' provided by 'kwin-auto-mouse-remapper-dbus-service.py'
 3. 'kwin-auto-mouse-remapper-dbus-service.py' then decides based on the received window title which script to run from the 'mapping_scripts' folder. This folder can contain arbitrary shell scripts (YOLO), but I filled them with something like this:  
 ```bash
 #!/usr/bin/bash
@@ -22,31 +21,54 @@ kwriteconfig6 --file kcminputrc --group ButtonRebinds --group Mouse --key ExtraB
 kwriteconfig6 --file kcminputrc --group ButtonRebinds --group Mouse --key ExtraButton8 "Key,L" --notify             # Landing Gear
 kwriteconfig6 --file kcminputrc --group ButtonRebinds --group Mouse --key ExtraButton9 "Key,Home" --notify          # Cargo Scoop
 ```
-Along with this rule in 'app_mapping.json':  
+
+## Configuration
+The 'app_mapping.json' config file must consist of a json list of dicts. See an example below.  
+There has to be one entry with the "match-type" "__DEFAULT__", this is the mapping that applies if no other match is found.  
+Currently there are two kinds of "match-type": "window-title" and "cmdline". Both take one or more patterns using regex notation (matching is done with the python *re* package) to match against the reported active window.  
+**All specified patterns have to match** (AND logic).  
+### Matching Window Titles
+Since apps are generally free to change their window titles freely, matching that can be finicky, but under the hood it's probably a good bit faster. Also since a window title change generally doesn't correspond to a focus change, depending on the timing a mapping might not get applied as expected.  
+Example: Elite Dangerous comes with a launcher and when using gamescope to run the game, the main game "takes over" the launcher window and my mapping doesn't get applied when the game starts proper unless I match the Launcher title, which would break if I ever alt-tabbed out and back into the game, so it's not ideal.  
+For this reason we can also match by "cmdline".
+### Matching "cmdline"
+If a matching rule using match-type "cmdline" is specified we use the PID supplied by the KWin script together with [psutil](https://pypi.org/project/psutil/) to get the cmdline property of the process object.  
+This info can be as simple as just the binary path or as convoluted as
 ```json
-    {
-        "window-title": "Elite - Dangerous (CLIENT)",
-        "mapping-script": "keybind_elite_dangerous.sh"
-    }
+['gamescope', '-H', '600', '--hdr-enabled', '-r', '240', '--', '/home/schorsch/.local/share/Steam/ubuntu12_32/steam-launch-wrapper',
+'--', '/home/schorsch/.local/share/Steam/ubuntu12_32/reaper', 'SteamLaunch', 'AppId=359320', '--',
+'/home/schorsch/.local/share/Steam/steamapps/common/SteamLinuxRuntime_sniper/_v2-entry-point', '--verb=waitforexitandrun', '--',
+'/home/schorsch/.local/share/Steam/steamapps/common/Proton Hotfix/proton', 'waitforexitandrun',
+'/home/schorsch/.local/share/Steam/steamapps/common/Elite Dangerous/EDLaunch.exe', '/Steam', '/novr']
 
 ```
-which automagically configures the extra buttons on my mouse for Elite Dangrous as if you'd set them in the Plasma System settings. Seems pretty reliable. More reliable than Piper in any case, fucking rat-shit...  
-Well to be fair you do need Piper to set all your Gamerbuttons to something generic first. But that's a one and done kinda deal.  
+Doesn't that look like fun...  
+Problem here is how to determine what's the actual application name we're interested in, so I figure just narrow it down as much as possible so it *probably* doesn't match something I dont want.  
+Here the multiple matching patterns really shine. Each pattern gets sequentially applied to each item in this list and for the config to match, each pattern has to match with at least one item.  
+In my example I use the patterns ".\*proton$" and ".\*EDLaunch.exe$". I figure if these patterns both occur in my command line I'm *probably* looking at the actual game window of Elite Dangerous. And if not I can always narrow it down further with more or better patterns.  
 
-Also make sure there is a "\_\_DEFAULT__" 'app' in the 'app_mapping.json', this is the mapping that applies if no other match is found. A valid 'app_mapping.json' would be:  
+A full valid 'app_mapping.json' could be:  
 ```json
 [
     {
-        "window-title": "__DEFAULT__",
+        "match-type": "__DEFAULT__",
+        "match-patterns": [],
         "mapping-script": "keybind_desktop.sh"
     },
     {
-        "window-title": "Elite - Dangerous (CLIENT)",
+        "match-type": "window-title",
+        "match-patterns": ["ARMORED CORE™ VI FIRES OF RUBICON™"],
+        "mapping-script": "keybind_armored_core_6.sh"
+    },
+    {
+        "match-type": "cmdline",
+        "match-patterns": [".*proton$", ".*EDLaunch.exe$"],
         "mapping-script": "keybind_elite_dangerous.sh"
     }
 ]
 ```
-And of course both 'keybind_desktop.sh' and 'keybind_elite_dangerous.sh' need to be present in the 'mapping_scripts' folder and be executable.
+And of course both 'keybind_desktop.sh', "keybind_armored_core_6.sh" and 'keybind_elite_dangerous.sh' need to be present in the 'mapping_scripts' folder and be executable.
+
 
 ## Installation
 0. Clone the repo to where you're ok for it to stay
@@ -58,7 +80,8 @@ And of course both 'keybind_desktop.sh' and 'keybind_elite_dangerous.sh' need to
 6. Enable the new service: `systemctl --user enable --now kwin-auto-mouse-remapper`
 7. Sanity check that the service is running: `systemctl --user status kwin-auto-mouse-remapper`
 8. Install and enable the KWin script, either via the provided install script or via Plasma System Settings GUI
-9. Done  
+9. Use Piper or equivalend to set your Gamerbuttons™ to something generic to avoid conflicting inputs
+10. Done  
 
 See the documentation above on how to configure which window should trigger which script. Don't forget to `systemctl --user restart kwin-auto-mouse-remapper` after changing the config so it gets reloaded.  
 
@@ -75,5 +98,8 @@ I just thought it would be nice to have this publicly documented.
 ### 17.05.2025
 Added an additional DBus listener so the script can wait until any global hotkeys are released before loading a new mapping. Previously there was an issue that when for example switching to a matching window on a different virtual desktop using Ctrl+Meta+ArrowKey the Ctrl+Meta keys would get stuck.
 
+### 19.05.2025
+Added more advanced matching features
+
 ## To Do
-- Offer more options for matching, maybe via regex pattern or process name
+- ~~Offer more options for matching, maybe via regex pattern or process name~~

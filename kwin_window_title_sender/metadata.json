@@ -11,7 +11,7 @@
             }
         ],
         "Id": "kwin_window_title_sender",
-        "Version": "1.0",
+        "Version": "1.2",
         "License": "GPLv3",
         "Website": "https://github.com/username/myscript"
     },

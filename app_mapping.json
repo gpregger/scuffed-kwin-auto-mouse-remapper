@@ -1,10 +1,17 @@
 [
     {
-        "window-title": "__DEFAULT__",
+        "match-type": "__DEFAULT__",
+        "match-patterns": [],
         "mapping-script": "keybind_desktop.sh"
     },
     {
-        "window-title": "Elite - Dangerous (CLIENT)",
+        "match-type": "window-title",
+        "match-patterns": ["ARMORED CORE™ VI FIRES OF RUBICON™"],
+        "mapping-script": "keybind_armored_core_6.sh"
+    },
+    {
+        "match-type": "cmdline",
+        "match-patterns": [".*proton$", ".*EDLaunch.exe$"],
         "mapping-script": "keybind_elite_dangerous.sh"
     }
 ]
