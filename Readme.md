@@ -7,7 +7,7 @@ Though to be fair, scope of application is a bit narrow, seeing as this is very 
 1. 'kwin-auto-mouse-remapper-dbus-service.py' runs as a systemd service using 'kwin-auto-mouse-remapper.service'
 2. This python script loads 'app_mapping.json' which contains the rules about which window gets which mapping script. simple.
 2. 'kwin_window_title_sender' runs in the background as a KWin script. This connects to the workspace.windowActivated signal and with every window focus change reports the title of the active window and the PID of the responsible process to the DBus service 'org.schorsch.mousekeymapper' provided by 'kwin-auto-mouse-remapper-dbus-service.py'
-3. 'kwin-auto-mouse-remapper-dbus-service.py' then decides based on the received window title which script to run from the 'mapping_scripts' folder. This folder can contain arbitrary shell scripts (YOLO), but I filled them with something like this:  
+3. 'kwin-auto-mouse-remapper-dbus-service.py' then decides based on the received window title / PID and the rules in app_mapping.json which script to run from the 'mapping_scripts' folder. This folder can contain arbitrary shell scripts (YOLO), but I filled them with something like this:  
 ```bash
 #!/usr/bin/bash
 # keybind_elite_dangerous.sh
@@ -21,10 +21,11 @@ kwriteconfig6 --file kcminputrc --group ButtonRebinds --group Mouse --key ExtraB
 kwriteconfig6 --file kcminputrc --group ButtonRebinds --group Mouse --key ExtraButton8 "Key,L" --notify             # Landing Gear
 kwriteconfig6 --file kcminputrc --group ButtonRebinds --group Mouse --key ExtraButton9 "Key,Home" --notify          # Cargo Scoop
 ```
+To set the Plasma Extra Mouse Buttons. This is equvalent to mapping the extra mouse buttons in the Plasma Settings.
 
 ## Configuration
 The 'app_mapping.json' config file must consist of a json list of dicts. See an example below.  
-There has to be one entry with the "match-type" "__DEFAULT__", this is the mapping that applies if no other match is found.  
+There has to be one entry with the "match-type" "\__DEFAULT__", this is the mapping that applies if no other match is found.  
 Currently there are two kinds of "match-type": "window-title" and "cmdline". Both take one or more patterns using regex notation (matching is done with the python *re* package) to match against the reported active window.  
 **All specified patterns have to match** (AND logic).  
 ### Matching Window Titles
@@ -80,7 +81,7 @@ And of course both 'keybind_desktop.sh', "keybind_armored_core_6.sh" and 'keybin
 6. Enable the new service: `systemctl --user enable --now kwin-auto-mouse-remapper`
 7. Sanity check that the service is running: `systemctl --user status kwin-auto-mouse-remapper`
 8. Install and enable the KWin script, either via the provided install script or via Plasma System Settings GUI
-9. Use Piper or equivalend to set your Gamerbuttons™ to something generic to avoid conflicting inputs
+9. Use Piper or equivalent to set your Gamerbuttons™ to something generic to avoid conflicting inputs
 10. Done  
 
 See the documentation above on how to configure which window should trigger which script. Don't forget to `systemctl --user restart kwin-auto-mouse-remapper` after changing the config so it gets reloaded.  
