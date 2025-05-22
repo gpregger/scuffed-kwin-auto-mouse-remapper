@@ -25,7 +25,7 @@ To set the Plasma Extra Mouse Buttons. This is equvalent to mapping the extra mo
 
 ## Configuration
 The 'app_mapping.json' config file must consist of a json list of dicts. See an example below.  
-There has to be one entry with the "match-type" "\__DEFAULT__", this is the mapping that applies if no other match is found.  
+There has to be one entry with the "match-type" "\_\_DEFAULT__", this is the mapping that applies if no other match is found.  
 Currently there are two kinds of "match-type": "window-title" and "cmdline". Both take one or more patterns using regex notation (matching is done with the python *re* package) to match against the reported active window.  
 **All specified patterns have to match** (AND logic).  
 ### Matching Window Titles
