@@ -19,11 +19,11 @@
 #   |___|
 #
 
-kwriteconfig6 --file kcminputrc --group ButtonRebinds --group Mouse --key ExtraButton1 "Key,Alt+Left" --notify
-kwriteconfig6 --file kcminputrc --group ButtonRebinds --group Mouse --key ExtraButton2 "Key,Alt+Right" --notify
+kwriteconfig6 --file kcminputrc --group ButtonRebinds --group Mouse --key ExtraButton1 "Key,Back" --notify
+kwriteconfig6 --file kcminputrc --group ButtonRebinds --group Mouse --key ExtraButton2 "Key,Forward" --notify
 kwriteconfig6 --file kcminputrc --group ButtonRebinds --group Mouse --key ExtraButton4 "Key,Meta+Tab" --notify
-kwriteconfig6 --file kcminputrc --group ButtonRebinds --group Mouse --key ExtraButton5 "Key,Alt+Left" --notify
-kwriteconfig6 --file kcminputrc --group ButtonRebinds --group Mouse --key ExtraButton6 "Key,Alt+Right" --notify
+kwriteconfig6 --file kcminputrc --group ButtonRebinds --group Mouse --key ExtraButton5 "Key,Back" --notify
+kwriteconfig6 --file kcminputrc --group ButtonRebinds --group Mouse --key ExtraButton6 "Key,Forward" --notify
 kwriteconfig6 --file kcminputrc --group ButtonRebinds --group Mouse --key ExtraButton7 "Key,Meta+Tab" --notify
 kwriteconfig6 --file kcminputrc --group ButtonRebinds --group Mouse --key ExtraButton8 "Key,Meta+Ctrl+Right" --notify
 kwriteconfig6 --file kcminputrc --group ButtonRebinds --group Mouse --key ExtraButton9 "Key,Meta+Ctrl+Left" --notify
