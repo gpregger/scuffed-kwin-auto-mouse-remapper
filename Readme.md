@@ -1,5 +1,5 @@
 # Scuffed Auto Mouse Key Remapping with Kwin and DBus
-This is the result of ~~a~~ several spontaneous 6h pre-weekend crunches trying to somewhat replicate the Logitech G Hub functionality of having per application mouse profiles.
+This is the result of ~~a~~ several spontaneous 6h pre-weekend crunches trying to somewhat replicate the Logitech G Hub functionality of having per application mouse profiles.  
 It's pretty scuffed but hey, it works so far (not that I've tested it for more than ~~5~~ ~~120~~ 240 minutes as of writing this).  
 If this acutally ends up working mid to long term, consider my mind thoroughly boggled that it took this long to produce something like this.  
 Though to be fair, scope of application is a bit narrow, seeing as this is very KDE specific.  
