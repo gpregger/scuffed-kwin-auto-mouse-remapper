@@ -2,6 +2,13 @@
 ## *SKAMR*?
 idk...
 
+## Prerequisites
+- Plasma 6 (for kwriteconfig6 in the remapping scripts, probably not needed if you don't want to do kwriteconfig6)
+- kwin (for the kwin script sending the active window information)
+- systemd (for the dbus listener service)
+- Python 3.10+ (probably)
+?
+
 ## Working Principle
 1. 'kwin-auto-mouse-remapper-dbus-service.py' runs as a systemd service using 'kwin-auto-mouse-remapper.service'
 2. This python script loads 'app_mapping.json' which contains the rules about which window gets which mapping script. simple.
