@@ -6,7 +6,7 @@ idk...
 - Plasma 6 (for kwriteconfig6 in the remapping scripts, probably not needed if you don't want to do kwriteconfig6)
 - kwin (for the kwin script sending the active window information)
 - systemd (for the dbus listener service)
-- Python 3.10+ (probably)  
+- Python 3.10+ (probably, ideally with venv support)  
 ?
 
 ## Working Principle
