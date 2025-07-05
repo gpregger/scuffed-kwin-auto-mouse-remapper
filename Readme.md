@@ -1,8 +1,6 @@
 # Scuffed Auto Mouse Key Remapping with Kwin and DBus
-This is the result of ~~a~~ several spontaneous 6h pre-weekend crunches trying to somewhat replicate the Logitech G Hub functionality of having per application mouse profiles.  
-It's pretty scuffed but hey, it works so far (not that I've tested it for more than ~~5~~ ~~120~~ 240 minutes as of writing this).  
-If this acutally ends up working mid to long term, consider my mind thoroughly boggled that it took this long to produce something like this.  
-Though to be fair, scope of application is a bit narrow, seeing as this is very KDE specific.  
+## *SKAMR*?
+idk...
 
 ## Working Principle
 1. 'kwin-auto-mouse-remapper-dbus-service.py' runs as a systemd service using 'kwin-auto-mouse-remapper.service'
@@ -46,7 +44,7 @@ This info can be as simple as just the binary path or as convoluted as
 ```
 Doesn't that look like fun...  
 Problem here is how to determine what's the actual application name we're interested in, so I figure just narrow it down as much as possible so it *probably* doesn't match something I dont want.  
-Here the multiple matching patterns really shine. Each pattern gets sequentially applied to each item in this list and for the config to match, each pattern has to match with at least one item.  
+Here the multiple matching patterns come in handy. Each pattern gets sequentially applied to each item in this list and for the config to match, each pattern has to match with at least one item.  
 In my example I use the patterns ".\*proton$" and ".\*EDLaunch.exe$". I figure if these patterns both occur in my command line I'm *probably* looking at the actual game window of Elite Dangerous. And if not I can always narrow it down further with more or better patterns.  
 
 A full valid 'app_mapping.json' could be:  
@@ -105,3 +103,4 @@ Added more advanced matching features
 
 ## To Do
 - ~~Offer more options for matching, maybe via regex pattern or process name~~
+- Package and publish to AUR or something similar
